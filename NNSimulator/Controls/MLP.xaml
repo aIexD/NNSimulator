@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="NNSimulator.Controls.MLP"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NNSimulator.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="editor">
+  <UserControl.Resources>
+    <Style x:Key="RoundButton" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid>
+              <Ellipse Fill="Gainsboro" Stroke="#FF7E7E7E"/>
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="Foreground" Value="#FF2E2E2E"/>
+    </Style>
+    <local:MathConverter x:Key="MathConverter"/>
+  </UserControl.Resources>
+  <Grid Margin="10,15,10,10" x:Name="grid" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Top">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+      <Button x:Name="btnAddLayer" Style="{StaticResource RoundButton}" FontSize="18" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Content="+" Click="btnAddLayer_Click" Margin="0,0,7,0"/>
+      <Button x:Name="btnRemoveLayer" Style="{StaticResource RoundButton}" FontSize="18" HorizontalAlignment="Center" Width="30" Height="30" VerticalAlignment="Top" Content="-" Click="btnRemoveLayer_Click" Margin="0,0,7,0"/>
+      <TextBlock x:Name="txtHidden" FontSize="16" Foreground="#FF2C2C2C" Text="{Binding Path=Layers.Count, ElementName=editor, StringFormat=' {0} Hidden Layers', Converter={StaticResource MathConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </StackPanel>
+
+    <ItemsControl x:Name="icL" Margin="0,40,0,0" ItemsSource="{Binding Layers, ElementName=editor}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+
+            <StackPanel Orientation="Horizontal" Margin="17,0,0,0">
+              <Button x:Name="btnAddNeuron" Width="20" Height="20" VerticalAlignment="Top" Content="+" Click="btnAddNeuron_Click" Margin="0,0,8,0" />
+              <Button x:Name="btnRemoveNeuron" Width="20" Height="20" VerticalAlignment="Top" Content="-" Click="btnRemoveNeuron_Click"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Path=Neurons.Count, StringFormat=' {0} Neurons'}" Margin="12,25,0,0" Foreground="#FF2C2C2C" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+            <ItemsControl x:Name="icN" ItemsSource="{Binding Path=Neurons}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Margin="10,45,0,0" VerticalAlignment="Center"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid>
+                    <Ellipse Margin="3" Stroke="#FF3A619B" StrokeThickness="2" Fill="#FFE6E1E1" Width="40" Height="40" RenderTransformOrigin="{Binding XY, Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding Path=Content}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+                    <!--<ItemsControl ItemsSource="{Binding Path=Synapses}"/>-->
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Grid>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </Grid>
+</UserControl>
